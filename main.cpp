@@ -5,7 +5,6 @@
 #include <string>
 #include <iomanip>
 #include <algorithm>
-// #include <cstring>
 
 using namespace std;
 
@@ -14,14 +13,14 @@ class contact
 private:
     string name;
     int n = 0;
-    vector<string> numbers;
+    string numbers[4] = {""};
 
 public:
     friend void storeContact(contact &cont);
     contact(string name, string number) : name(name) { addNumber(number); }
     void addNumber(string number)
     {
-        numbers.push_back(number);
+        numbers[n] = number;
         n++;
     };
     void printNumbers()
@@ -33,26 +32,29 @@ public:
     void printContacts()
     {
         cout << "Name: " << name << endl;
-        printNumbers();
+        for (int i = 0; i < n; i++)
+            cout << i + 1 << ". " << numbers[i] << endl;
         cout << endl;
     }
     void changeName(string n) { name = n; }
     void removeNumber()
     {
-        int choice = 0;
+        int choice;
         printNumbers();
         cout << "Which number to remove: ";
         cin >> choice;
         choice--;
-        numbers.erase(numbers.begin() + choice);
-        n--;
+        if (choice >= 0 && choice < n)
+        {
+            numbers[choice] = numbers[n];
+            numbers[n] = "";
+            n--;
+        }
     }
 };
 
 void storeContact(contact &cont)
 {
-    // transform(file_name.begin(), file_name.end(), file_name.begin(), ::tolower);
-
     fstream f("contactsFile.csv", ios::in | ios::app);
     if (!f.is_open())
     {
@@ -61,14 +63,29 @@ void storeContact(contact &cont)
     }
     else
     {
-        f << cont.name << ",";
-        for (int i = 0; i < cont.n; i++)
-            f << cont.numbers[i] << ",";
+        f << cont.name << ","; // Name
+        int i = 0;
+        if (i < cont.n)
+            f << cont.numbers[i]; // Phone 1 - Value
+        i++;
+        f << ",";
+        if (i < cont.n)
+            f << cont.numbers[i]; // Phone 2 - Value
+        i++;
+        f << ",";
+        if (i < cont.n)
+            f << cont.numbers[i]; // Phone 3 - Value
+        i++;
+        f << ",";
+        if (i < cont.n)
+            f << cont.numbers[i]; // Phone 4 - Value
+        i++;
+        f << ",";
         f << endl;
     }
 };
 
-// contact retrieve_contiety_account_file(string fname)
+// contact retrieveContact(string contName)
 // {
 //     fstream f;
 //     contact temp("name", "000000");
@@ -77,7 +94,7 @@ void storeContact(contact &cont)
 //     f.open("contact.csv");
 //     if (!f.is_open() && f.fail())
 //     {
-//         cout << "\nNo record of contiety found\n";
+//         cout << "\nNo record found\n";
 //         f.close();
 //     }
 //     else
