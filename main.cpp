@@ -85,6 +85,8 @@ void storeContact(contact &cont)
     }
 };
 
+//THese are the changess
+
 // contact retrieveContact(string contName)
 // {
 //     fstream f;
