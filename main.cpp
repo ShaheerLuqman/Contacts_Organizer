@@ -5,6 +5,7 @@
 #include <string>
 #include <iomanip>
 #include <algorithm>
+#include <unordered_map>
 
 using namespace std;
 
@@ -16,7 +17,8 @@ private:
     string numbers[4] = {""};
 
 public:
-    friend void storeContact(contact &cont);
+    friend void storeContact(contact &);
+    friend void retrieveContact();
     contact(string name, string number) : name(name) { addNumber(number); }
     void addNumber(string number)
     {
@@ -55,7 +57,7 @@ public:
 
 void storeContact(contact &cont)
 {
-    fstream f("contactsFile.csv", ios::in | ios::app);
+    fstream f("contactsFile.csv", ios::out | ios::app);
     if (!f.is_open())
     {
         cout << "could not open file\n";
@@ -85,59 +87,48 @@ void storeContact(contact &cont)
     }
 };
 
-//THese are the changess
+void retrieveContact()
+{
+    fstream f;
+    contact temp("name", "000000");
+    string line;
 
-// contact retrieveContact(string contName)
-// {
-//     fstream f;
-//     contact temp("name", "000000");
-//     string line;
+    f.open("contactsFile.csv", ios::in);
+    if (!f.is_open() && f.fail())
+    {
+        cout << "\nNo record found\n";
+        f.close();
+    }
+    else
+    {
+        while (!f.eof())
+        {
 
-//     f.open("contact.csv");
-//     if (!f.is_open() && f.fail())
-//     {
-//         cout << "\nNo record found\n";
-//         f.close();
-//     }
-//     else
-//     {
-//         getline(f, line);
-//         temp.set_contiety_name(line);
-//         getline(f, line);
-//         temp.set_contiety_description(line);
-//         getline(f, line);
-//         temp.set_number_of_events(stoi(line));
-//         getline(f, line);
-//         temp.set_number_of_members(stoi(line));
-//         for (int i = 0; i < temp.get_number_of_events(); i++)
-//         {
-//             getline(f, line, ',');
-//             temp.event_names[i] = line;
-//         }
-
-//         for (int i = 0; i < temp.get_number_of_members(); i++)
-//         {
-//             getline(f, line, ',');
-//             temp.member_names[i][0] = line;
-//             getline(f, line, ',');
-//             temp.member_names[i][1] = line;
-//             getline(f, line);
-//             temp.member_names[i][2] = line;
-//         }
-//     }
-//     return temp;
-// };
+            getline(f, line, ',');
+            temp.name = line;
+            cout << line << ", ";
+            while (getline(f, line, ','))
+            {
+                temp.addNumber(line);
+                cout << line << ", ";
+            }
+            temp.printContacts();
+            cout << endl;
+        }
+    }
+};
 
 int main()
 {
     contact hi("M. Shaheer Luqman", "03100124127");
     // hi.addNumber("03352904355");
     hi.printContacts();
-    hi.removeNumber();
+    // hi.removeNumber();
     cout << endl;
     hi.printContacts();
 
     storeContact(hi);
+    retrieveContact();
 }
 /*
 class dnode
