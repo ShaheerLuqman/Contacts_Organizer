@@ -121,7 +121,7 @@ void retrieveContact()
 int main()
 {
     contact hi("M. Shaheer Luqman", "03100124127");
-    // hi.addNumber("03352904355");
+    hi.addNumber("03352904355");
     hi.printContacts();
     // hi.removeNumber();
     cout << endl;
