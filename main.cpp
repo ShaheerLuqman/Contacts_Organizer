@@ -9,7 +9,7 @@
 
 using namespace std;
 
-unordered_map<string, contact> book;
+// unordered_map<string, contact> book;
 
 class contact
 {
@@ -104,7 +104,7 @@ void retrieveContact()
     // contact temp("name");
     string line, stemp;
 
-    f.open("contactsGoogleBackup.csv", ios::in);
+    f.open("contactsFile.csv", ios::in);
     if (!f.is_open() && f.fail())
     {
         cout << "\nNo record found\n";
