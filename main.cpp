@@ -190,15 +190,16 @@ int main()
     }
 }
 
-void createContact() {}
-void deleteContact() {}
-void emptyContacts() {}
-void missingInformation() {}
-void invalidContact() {}
-void mergeContact() {}
-void internationalization() {}
-void Capitalization() {}
-void simplifyNumber() {}
-void duplicateContact() {}
+void createContact() {}      // Shaharyar
+void deleteContact() {}      // Shaharyar
+void emptyContacts() {}      // Hadi
+void missingInformation() {} // Hadi
+void invalidContact() {}     // Hadi
+// Smart Search
+void mergeContact() {}         // Hadi
+void internationalization() {} // Shaharyar
+void Capitalization() {}       // Hadi
+void simplifyNumber() {}       // Shaharyar
+void duplicateContact() {}     // Shaharyar
 // Preview and Confirm All Changes
 void searchAndReplaceContacts() {}
