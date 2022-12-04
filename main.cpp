@@ -1,13 +1,15 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
-#include <iterator>
+// #include <vector>
+// #include <iterator>
 #include <string>
 #include <iomanip>
-#include <algorithm>
+// #include <algorithm>
 #include <unordered_map>
 
 using namespace std;
+
+unordered_map<string, contact> book;
 
 class contact
 {
@@ -25,11 +27,14 @@ public:
     {
         if (n >= 4)
         {
-            cout << "Cannot add more than 4 numbers" << endl;
+            // cout << "Cannot add more than 4 numbers" << endl;
             return;
         }
-        numbers[n] = number;
-        n++;
+        if (number != "")
+        {
+            numbers[n] = number;
+            n++;
+        }
     };
     void printNumbers()
     {
@@ -96,10 +101,10 @@ void storeContact(contact &cont)
 void retrieveContact()
 {
     fstream f;
-    contact temp("name");
+    // contact temp("name");
     string line, stemp;
 
-    f.open("contactsFile.csv", ios::in);
+    f.open("contactsGoogleBackup.csv", ios::in);
     if (!f.is_open() && f.fail())
     {
         cout << "\nNo record found\n";
@@ -109,18 +114,22 @@ void retrieveContact()
     {
         while (!f.eof())
         {
+            contact temp("name");
+
             getline(f, line);
             stringstream input_stringstream(line);
             getline(input_stringstream, stemp, ',');
             temp.name = stemp;
-            // cout << line << ", ";
+            // cout << stemp << ", ";
+
             for (int i = 0; i < 4; i++)
             {
                 getline(input_stringstream, stemp, ',');
                 temp.addNumber(stemp);
-                // cout << line << ", ";
+                // cout << stemp << ", ";
             }
 
+            cout << endl;
             temp.printContacts();
             cout << endl;
         }
