@@ -1,15 +1,11 @@
 #include <iostream>
 #include <fstream>
-// #include <vector>
-// #include <iterator>
 #include <string>
 #include <iomanip>
-// #include <algorithm>
+#include <algorithm>
 #include <unordered_map>
 
 using namespace std;
-
-// unordered_map<string, contact> book;
 
 class contact
 {
@@ -19,10 +15,23 @@ private:
     string numbers[4] = {""};
 
 public:
-    friend void storeContact(contact &);
-    friend void retrieveContact();
-    contact(string name) : name(name) {}
+    friend void storeContactCSV(contact &);
+    friend void importContacts();
+
+    contact() {}
     contact(string name, string number) : name(name) { addNumber(number); }
+
+    string getName() const { return name; }
+    string getNumber1() const { return numbers[0]; }
+    string getNumber2() const { return numbers[1]; }
+    string getNumber3() const { return numbers[2]; }
+    string getNumber4() const { return numbers[3]; }
+    void setName(string name) { this->name = name; }
+    void setNumber1(string number) { numbers[0] = number; }
+    void setNumber2(string number) { numbers[1] = number; }
+    void setNumber3(string number) { numbers[2] = number; }
+    void setNumber4(string number) { numbers[3] = number; }
+
     void addNumber(string number)
     {
         if (n >= 4)
@@ -36,6 +45,7 @@ public:
             n++;
         }
     };
+
     void printNumbers()
     {
         for (int i = 0; i < n; i++)
@@ -49,7 +59,7 @@ public:
             cout << i + 1 << ". " << numbers[i] << endl;
         cout << endl;
     }
-    void changeName(string n) { name = n; }
+
     void removeNumber()
     {
         int choice;
@@ -66,7 +76,9 @@ public:
     }
 };
 
-void storeContact(contact &cont)
+unordered_map<string, contact> book;
+
+void storeContactCSV(contact &cont)
 {
     fstream f("contactsFile.csv", ios::out | ios::app);
     if (!f.is_open())
@@ -97,11 +109,16 @@ void storeContact(contact &cont)
         f << endl;
     }
 };
+void storeContactHash(contact &cont)
+{
+    string stemp = cont.getName();
+    transform(stemp.begin(), stemp.end(), stemp.begin(), ::tolower);
+    book.insert(std::make_pair(stemp, cont));
+}
 
-void retrieveContact()
+void importContacts()
 {
     fstream f;
-    // contact temp("name");
     string line, stemp;
 
     f.open("contactsFile.csv", ios::in);
@@ -114,40 +131,74 @@ void retrieveContact()
     {
         while (!f.eof())
         {
-            contact temp("name");
+            contact temp;
 
             getline(f, line);
             stringstream input_stringstream(line);
             getline(input_stringstream, stemp, ',');
             temp.name = stemp;
-            // cout << stemp << ", ";
 
             for (int i = 0; i < 4; i++)
             {
                 getline(input_stringstream, stemp, ',');
                 temp.addNumber(stemp);
-                // cout << stemp << ", ";
             }
-
-            cout << endl;
+            storeContactHash(temp);
             temp.printContacts();
-            cout << endl;
         }
     }
 };
 
+bool isEmpty(contact &temp)
+{
+    if (temp.getNumber1() == "" && temp.getNumber2() == "" && temp.getNumber3() == "" && temp.getNumber4() == "")
+        return true;
+    else
+        return false;
+};
+
+contact searchContact()
+{
+    string input;
+    cout << "Enter contact name to search: ";
+    getline(cin, input);
+    transform(input.begin(), input.end(), input.begin(), ::tolower);
+
+    contact temp;
+    temp = book[input];
+
+    if (temp.getName() != "" && isEmpty(temp) != true)
+    {
+        temp.printContacts();
+        return temp;
+    }
+    else
+        cout << "No contact found!" << endl;
+}
+
 int main()
 {
+    importContacts();
+
     contact hi("M. Shaheer Luqman", "03100124127");
     hi.addNumber("03352904355");
     hi.addNumber("05845131541");
-    // hi.addNumber("48412154421");
-    // hi.addNumber("asfasfafaga");
-    // hi.printContacts();
-    // hi.removeNumber();
-    // cout << endl;
-    // hi.printContacts();
 
-    // storeContact(hi);
-    retrieveContact();
+    while (1)
+    {
+        searchContact();
+    }
 }
+
+void createContact() {}
+void deleteContact() {}
+void emptyContacts() {}
+void missingInformation() {}
+void invalidContact() {}
+void mergeContact() {}
+void internationalization() {}
+void Capitalization() {}
+void simplifyNumber() {}
+void duplicateContact() {}
+// Preview and Confirm All Changes
+void searchAndReplaceContacts() {}
