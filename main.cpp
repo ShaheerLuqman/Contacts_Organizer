@@ -190,16 +190,36 @@ int main()
     }
 }
 
-void createContact() {}      // Shaharyar
-void deleteContact() {}      // Shaharyar
-void emptyContacts() {}      // Hadi
-void missingInformation() {} // Hadi
-void invalidContact() {}     // Hadi
-// Smart Search
-void mergeContact() {}         // Hadi
-void internationalization() {} // Shaharyar
-void Capitalization() {}       // Hadi
-void simplifyNumber() {}       // Shaharyar
-void duplicateContact() {}     // Shaharyar
+void createContact(){};
+// Shaharyar; Menu banaa na he Jo ke Name and number of contacts and utne numbers input le
+
+void deleteContact(){};
+// Hadi; Contact ka naam le aur hashmap se woh contact delete kerde
+
+void missingInformation(){};
+// Shaharyar; function bataye ga ke contact mein naam missing ho ya numbers 1 bhi na hoon tou woh insert kerwayega
+
+void invalidContact(){};
+// Hadi; dekhega ke agar contact ke number mein agar
+// 1. koi aesa charachter ho jo ke number mein nahi hona chahiye lekin ho
+// 2. koi number standard size se chota ho
+// 3. koi number standard size se baraa ho
+// tou uss contact ko flag kere.
+
+void smartSearch(); // Shaheer
+
+void mergeContact(){};
+// Hadi; 2 contacts parameter lega and usko aik contact mein save kerke return kerdega
+
+void internationalization(){};
+// Shaharyar; agar number se pehle international code na ho tou woh laga de for e.g 03100124127 tou usko +923100124127 kerde. yeh sirf 03XX... wale numbers nahi 021XX.. wale bhi kerna chahiye
+
+void Capitalization(){};
+// Hadi; Name ke jitne bhi words hein sab ke pehle letter capital hoone chahiye
+
+void simplifyNumber(){}; // Shaheer
+
+void duplicateContact(){}; // Shaheer
+
 // Preview and Confirm All Changes
-void searchAndReplaceContacts() {}
+void searchAndReplaceContacts(){};
