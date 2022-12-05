@@ -160,6 +160,7 @@ bool isEmpty(contact &temp)
 contact searchContact()
 {
     string input;
+    fflush(stdin);
     cout << "Enter contact name to search: ";
     getline(cin, input);
     transform(input.begin(), input.end(), input.begin(), ::tolower);
@@ -176,22 +177,52 @@ contact searchContact()
         cout << "No contact found!" << endl;
 }
 
+void createContact()
+{
+    contact a;
+    string input;
+    int count;
+    cout << "Creating New Contact\n"
+         << "Enter Name: ";
+    getline(cin, input);
+    a.setName(input);
+
+    do
+    {
+        cout << "How many numbers do want to add in this contact: ";
+        cin >> count;
+    } while (count > 4 || count < 0);
+
+    for (int i = 0; i < count; i++)
+    {
+        cout << "Enter Contact Number: ";
+        cin >> input;
+        a.addNumber(input);
+    }
+
+    storeContactHash(a);
+    storeContactCSV(a);
+
+    system("pause");
+}
+// Shaharyar; Menu banaa na he Jo ke Name and number of contacts and utne numbers input le
+
 int main()
 {
     importContacts();
 
-    contact hi("M. Shaheer Luqman", "03100124127");
-    hi.addNumber("03352904355");
-    hi.addNumber("05845131541");
+    createContact();
+
+    // contact hi("M. Shaheer Luqman", "03100124127");
+    // hi.addNumber("03352904355");
+    // hi.addNumber("05845131541");
+    // storeContactHash(hi);
 
     while (1)
     {
         searchContact();
     }
 }
-
-void createContact(){};
-// Shaharyar; Menu banaa na he Jo ke Name and number of contacts and utne numbers input le
 
 void deleteContact(){};
 // Hadi; Contact ka naam le aur hashmap se woh contact delete kerde
