@@ -208,12 +208,6 @@ void createContact()
     system("pause");
 }
 
-void deleteContact(){};
-// Hadi; Contact ka naam le aur hashmap se woh contact delete kerde
-
-void missingInformation(){};
-// Shaharyar; function bataye ga ke contact mein naam missing ho ya numbers 1 bhi na hoon tou woh insert kerwayega
-
 bool isInvalidContact(contact &cont)
 {
     bool invalid = false;
@@ -240,11 +234,12 @@ bool isInvalidContact(contact &cont)
     }
     return invalid;
 };
-// Hadi; dekhega ke agar contact ke number mein agar
-// 1. koi aesa charachter ho jo ke number mein nahi hona chahiye lekin ho
-// 2. koi number standard size se chota ho
-// 3. koi number standard size se baraa ho
-// tou uss contact ko flag kere.
+
+void deleteContact(){};
+// Hadi; Contact ka naam le aur hashmap se woh contact delete kerde
+
+void missingInformation(){};
+// Shaharyar; function bataye ga ke contact mein naam missing ho ya numbers 1 bhi na hoon tou woh insert kerwayega
 
 void smartSearch(); // Shaheer
 
@@ -257,12 +252,12 @@ void internationalization(){};
 void Capitalization(){};
 // Hadi; Name ke jitne bhi words hein sab ke pehle letter capital hoone chahiye
 
-void simplifyNumber(){}; // Shaheer
+void simplifyNumber(){}; // Shaharyar
 
 void duplicateContact(){}; // Shaheer
 
 // Preview and Confirm All Changes
-void searchAndReplaceContacts(){};
+void searchAndReplaceContacts(){}; // shaheer
 
 int main()
 {
