@@ -13,10 +13,12 @@ private:
     string name;
     int n = 0;
     string numbers[4] = {""};
+    bool potentiallyInvalid = false;
 
 public:
     friend void storeContactCSV(contact &);
     friend void importContacts();
+    friend bool isInvalidContact(contact &);
 
     contact() {}
     contact(string name, string number) : name(name) { addNumber(number); }
@@ -74,6 +76,14 @@ public:
             n--;
         }
     }
+
+    bool isEmpty()
+    {
+        if (numbers[0] == "")
+            return true;
+        else
+            return false;
+    };
 };
 
 unordered_map<string, contact> book;
@@ -149,14 +159,6 @@ void importContacts()
     }
 };
 
-bool isEmpty(contact &temp)
-{
-    if (temp.getNumber1() == "" && temp.getNumber2() == "" && temp.getNumber3() == "" && temp.getNumber4() == "")
-        return true;
-    else
-        return false;
-};
-
 contact searchContact()
 {
     string input;
@@ -168,7 +170,7 @@ contact searchContact()
     contact temp;
     temp = book[input];
 
-    if (temp.getName() != "" && isEmpty(temp) != true)
+    if (temp.getName() != "" && temp.isEmpty() != true)
     {
         temp.printContacts();
         return temp;
@@ -205,24 +207,6 @@ void createContact()
 
     system("pause");
 }
-// Shaharyar; Menu banaa na he Jo ke Name and number of contacts and utne numbers input le
-
-int main()
-{
-    importContacts();
-
-    createContact();
-
-    // contact hi("M. Shaheer Luqman", "03100124127");
-    // hi.addNumber("03352904355");
-    // hi.addNumber("05845131541");
-    // storeContactHash(hi);
-
-    while (1)
-    {
-        searchContact();
-    }
-}
 
 void deleteContact(){};
 // Hadi; Contact ka naam le aur hashmap se woh contact delete kerde
@@ -230,7 +214,32 @@ void deleteContact(){};
 void missingInformation(){};
 // Shaharyar; function bataye ga ke contact mein naam missing ho ya numbers 1 bhi na hoon tou woh insert kerwayega
 
-void invalidContact(){};
+bool isInvalidContact(contact &cont)
+{
+    bool invalid = false;
+    string num;
+    int len, lower, upper;
+    for (int i = 0; i < cont.n; i++)
+    {
+        num = cont.numbers[i];
+        len = num.length();
+        if (len > 14 || len < 10) // contact can not be longer than 14 and shorter than 10
+            invalid = true;
+        else
+        {
+            if (!(num[0] == '0' || num[0] == '+')) // first digit other than 0 or +
+                invalid = true;
+
+            else
+            {
+                for (int i = 1; i < len; i++) // any non zero digit after first digit
+                    if (num[i] < '0' || num[i] > '9')
+                        invalid = true;
+            }
+        }
+    }
+    return invalid;
+};
 // Hadi; dekhega ke agar contact ke number mein agar
 // 1. koi aesa charachter ho jo ke number mein nahi hona chahiye lekin ho
 // 2. koi number standard size se chota ho
@@ -254,3 +263,29 @@ void duplicateContact(){}; // Shaheer
 
 // Preview and Confirm All Changes
 void searchAndReplaceContacts(){};
+
+int main()
+{
+    // importContacts();
+    // createContact();
+
+    contact hi("M. Shaheer Luqman", "03100124127");
+    hi.addNumber("03352904355");
+    hi.addNumber("0845131541");
+    storeContactHash(hi);
+
+    if (isInvalidContact(hi))
+    {
+        cout << "Invalid";
+    }
+    else
+    {
+        cout << "Valid";
+    }
+    return 0;
+
+    //     while (1)
+    // {
+    //     searchContact();
+    // }
+}
