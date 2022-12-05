@@ -24,6 +24,7 @@ public:
     contact() {}
     contact(string name, string number) : name(name) { addNumber(number); }
 
+    int getN() const { return n; }
     string getName() const { return name; }
     string getNumber1() const { return numbers[0]; }
     string getNumber2() const { return numbers[1]; }
@@ -76,6 +77,14 @@ public:
             numbers[n] = "";
             n--;
         }
+    }
+
+    string popNumber()
+    {
+        string num;
+        num = numbers[n - 1];
+        numbers[n - 1] = "";
+        return num;
     }
 
     bool isEmpty()
@@ -238,16 +247,65 @@ bool isInvalidContact(contact &cont)
     return invalid;
 };
 
-void deleteContact(){};
-// Hadi; Contact ka naam le aur hashmap se woh contact delete kerde
+void deleteContact(contact &con)
+{
+    book.erase(con.getName());
+
+    // delete from file??
+}
+
+void mergeContact(contact &c1, contact &c2)
+{
+
+    if ((c1.getN() + c2.getN()) > 4)
+    {
+        cout << "Contacts can't be merged! " << endl;
+        return;
+    }
+
+    for (int i = 0; i < c2.getN(); i++)
+    {
+        string num = c2.popNumber();
+        c1.addNumber(num);
+    }
+
+    deleteContact(c2);
+}
+
+void Capitalization(string &name)
+{
+    char ch;
+    int len, i;
+    len = name.size();
+    for (i = 0; i < len; ++i)
+    {
+        if (i == 0)
+        {
+            if (islower(name[i]))
+                name[i] = toupper(name[i]);
+        }
+        else
+        {
+            if (name[i] != ' ')
+            {
+                if (isupper(name[i]))
+                    name[i] = tolower(name[i]);
+            }
+            else
+            {
+                i++;
+                if (islower(name[i]))
+                    name[i] = toupper(name[i]);
+            }
+        }
+    }
+    return;
+}
 
 void missingInformation(){};
 // Shaharyar; function bataye ga ke contact mein naam missing ho ya numbers 1 bhi na hoon tou woh insert kerwayega
 
 void smartSearch(); // Shaheer
-
-void mergeContact(){};
-// Hadi; 2 contacts parameter lega and usko aik contact mein save kerke return kerdega
 
 void internationalization(string a[])
 {
@@ -261,9 +319,6 @@ void internationalization(string a[])
         return;
 }
 // Shaharyar; agar number se pehle international code na ho tou woh laga de for e.g 03100124127 tou usko +923100124127 kerde. yeh sirf 03XX... wale numbers nahi 021XX.. wale bhi kerna chahiye
-
-void Capitalization(){};
-// Hadi; Name ke jitne bhi words hein sab ke pehle letter capital hoone chahiye
 
 void simplifyNumber(){}; // Shaharyar
 
