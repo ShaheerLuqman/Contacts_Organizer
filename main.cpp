@@ -3,6 +3,7 @@
 #include <string>
 #include <iomanip>
 #include <algorithm>
+#include <map>
 #include <unordered_map>
 
 using namespace std;
@@ -54,7 +55,7 @@ public:
             cout << i + 1 << ". " << numbers[i] << endl;
     }
 
-    void printContacts()
+    void printContact()
     {
         cout << "Name: " << name << endl;
         for (int i = 0; i < n; i++)
@@ -86,7 +87,7 @@ public:
     };
 };
 
-unordered_map<string, contact> book;
+map<string, contact> book;
 
 void storeContactCSV(contact &cont)
 {
@@ -123,7 +124,7 @@ void storeContactHash(contact &cont)
 {
     string stemp = cont.getName();
     transform(stemp.begin(), stemp.end(), stemp.begin(), ::tolower);
-    book.insert(std::make_pair(stemp, cont));
+    book.insert(make_pair(stemp, cont));
 }
 
 void importContacts()
@@ -141,20 +142,22 @@ void importContacts()
     {
         while (!f.eof())
         {
-            contact temp;
-
             getline(f, line);
-            stringstream input_stringstream(line);
-            getline(input_stringstream, stemp, ',');
-            temp.name = stemp;
-
-            for (int i = 0; i < 4; i++)
+            if (line != "")
             {
+                contact temp;
+                stringstream input_stringstream(line);
                 getline(input_stringstream, stemp, ',');
-                temp.addNumber(stemp);
+                temp.name = stemp;
+
+                for (int i = 0; i < 4; i++)
+                {
+                    getline(input_stringstream, stemp, ',');
+                    temp.addNumber(stemp);
+                }
+                storeContactHash(temp);
+                temp.printContact();
             }
-            storeContactHash(temp);
-            temp.printContacts();
         }
     }
 };
@@ -172,7 +175,7 @@ contact searchContact()
 
     if (temp.getName() != "" && temp.isEmpty() != true)
     {
-        temp.printContacts();
+        temp.printContact();
         return temp;
     }
     else
@@ -246,7 +249,17 @@ void smartSearch(); // Shaheer
 void mergeContact(){};
 // Hadi; 2 contacts parameter lega and usko aik contact mein save kerke return kerdega
 
-void internationalization(){};
+void internationalization(string a[])
+{
+    if (a[0] != "+")
+    {
+        char ch = '+92';
+
+        a = ch + a;
+    }
+    else
+        return;
+}
 // Shaharyar; agar number se pehle international code na ho tou woh laga de for e.g 03100124127 tou usko +923100124127 kerde. yeh sirf 03XX... wale numbers nahi 021XX.. wale bhi kerna chahiye
 
 void Capitalization(){};
@@ -261,7 +274,8 @@ void searchAndReplaceContacts(){}; // shaheer
 
 int main()
 {
-    // importContacts();
+    importContacts();
+    cout << "Contacs Imported Successfully" << endl;
     // createContact();
 
     contact hi("M. Shaheer Luqman", "03100124127");
@@ -269,18 +283,71 @@ int main()
     hi.addNumber("0845131541");
     storeContactHash(hi);
 
-    if (isInvalidContact(hi))
-    {
-        cout << "Invalid";
-    }
-    else
-    {
-        cout << "Valid";
-    }
-    return 0;
+    system("pause");
 
-    //     while (1)
+    // unordered_map traversal
+    map<string, contact>::iterator it = book.begin();
+    while (it != book.end())
+    {
+        string word = it->first;
+        it->second.printContact();
+
+        it++;
+    }
+
+    // if (isInvalidContact(hi))
     // {
-    //     searchContact();
+    //     cout << "Invalid";
     // }
+    // else
+    // {
+    //     cout << "Valid";
+    // }
+    return 0;
+}
+
+void menu()
+{
+    string choice;
+    while (1)
+    {
+        system("cls");
+        cout << "Welcome to CONTACT ORGANIZER";
+        cout << "\nPress\n"
+             << "   1.  View All Contacts\n"
+             << "   2.  Search Contact\n"
+             << "   3.  Create New Contact\n"
+             << "   4.  Similar contact\n"
+             << "   5.  Duplicate Contacts\n"
+             << "   6.  Delete Contact\n"
+             << "   7.  Fill-in Empty Contacts Names\n"
+             << "   8.  Missing Information\n"
+             << "   9.  Invalid Contacts\n"
+             << "   10. Merge contact\n"
+             << "   11. Internationalization\n"
+             << "   12. Capitalization\n"
+             << "   13. Simplify Numbers\n"
+             << "   14. Search and Replace Contacts \n"
+             << "   0.  Exit\n"
+             << "Your Input: ";
+        cin >> choice;
+        if (choice == "0")
+        {
+            exit(EXIT_SUCCESS);
+        }
+        else if (choice == "1")
+        {
+            system("cls");
+        }
+        else if (choice == "2")
+        {
+            system("cls");
+        }
+        else if (choice == "3")
+        {
+            system("cls");
+        }
+        else
+            cout << "Wrong Input Entered!";
+    }
 }
