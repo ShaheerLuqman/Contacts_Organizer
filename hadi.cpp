@@ -5,6 +5,11 @@
 #include <tuple>
 #include <unordered_map>
 
+tuple<string,string,string,string> getNumbers()
+ {
+    return make_tuple(cont.getNumber1(), cont.getNumber2(), cont.getNumber3(),cont.getNumber4());
+ }
+
 void deleteContact(contact &con)
 {
     book.erase(con.getName());
