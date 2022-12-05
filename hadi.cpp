@@ -6,10 +6,19 @@
 #include <unordered_map>
 
 //in contact class
-tuple<string,string,string,string> getNumbers()
- {
-    return make_tuple(cont.getNumber1(), cont.getNumber2(), cont.getNumber3(),cont.getNumber4());
- }
+// tuple<string,string,string,string> getNumbers()
+//  {
+// //     return make_tuple(cont.getNumber1(), cont.getNumber2(), cont.getNumber3(),cont.getNumber4());
+//  }
+
+//in contact class
+string popNumber()
+    {
+        string num;
+        num = numbers[n-1];
+        numbers[n-1] = "";
+        return num;
+    }
 
 void deleteContact(contact &con)
 {
@@ -27,37 +36,57 @@ void mergeContact(contact &c1, contact c2)
 {
     int cont1 = c1.getN();
     int cont2 = c2.getN();
-    // int count = max(cont1, cont2);
-
-    string num1, num2, num3, num4, num[4];
-    // for (int i = 0; i < cont2; i++)
-    // {
-    //     num[i] = get<i>(c2.getNumbers());
-    // }
-    num1 = get<0>(c2.getNumbers());
-    num2 = get<1>(c2.getNumbers());
-    num3 = get<2>(c2.getNumbers());
-    num4 = get<3>(c2.getNumbers());
-
-    if (cont1 == 1)
+    
+    if ((cont1 + cont2)>4 )
     {
-        c1.addNumber(num1);
-        c1.addNumber(num2);
-        c1.addNumber(num3);
+        cout << "Contacts can't be merged! " << endl;
+        return;
     }
-    else if (cont1 == 2)
+    
+    for (int  i = 0; i < 4-cont1; i++)
     {
-        c1.addNumber(num1);
-        c1.addNumber(num2);
+        string num = c2.popNumber();
+        c1.addNumber(num);
     }
-    else if (cont1 == 2)
-    {
-        c1.addNumber(num1);
-    }
-    else
-        cout << "Cannot add more than 4 numbers" << endl;
-
+    
     deleteContact(c2);
+}
+
+// void mergeContact(contact &c1, contact c2)
+// {
+//     int cont1 = c1.getN();
+//     int cont2 = c2.getN();
+//     // int count = max(cont1, cont2);
+
+//     string num1, num2, num3, num4, num[4];
+//     // for (int i = 0; i < cont2; i++)
+//     // {
+//     //     num[i] = get<i>(c2.getNumbers());
+//     // }
+//     num1 = get<0>(c2.getNumbers());
+//     num2 = get<1>(c2.getNumbers());
+//     num3 = get<2>(c2.getNumbers());
+//     num4 = get<3>(c2.getNumbers());
+
+//     if (cont1 == 1)
+//     {
+//         c1.addNumber(num1);
+//         c1.addNumber(num2);
+//         c1.addNumber(num3);
+//     }
+//     else if (cont1 == 2)
+//     {
+//         c1.addNumber(num1);
+//         c1.addNumber(num2);
+//     }
+//     else if (cont1 == 2)
+//     {
+//         c1.addNumber(num1);
+//     }
+//     else
+//         cout << "Cannot add more than 4 numbers" << endl;
+
+//     deleteContact(c2);
     // if (cont2 == 1)
     // {
     //     string num1;
