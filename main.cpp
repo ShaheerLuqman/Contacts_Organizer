@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <map>
-#include <unordered_map>
+// #include <unordered_map>
 
 using namespace std;
 
@@ -343,6 +343,40 @@ int main()
     return 0;
 }
 
+void displayPhoneBook()
+{
+    system("cls");
+    cout << "Displaying All Contacts" << endl
+         << endl;
+
+    cout << left << setw(40) << "Name "
+         << left << setw(3) << "|"
+         << left << setw(16) << "Phone 1"
+         << left << setw(3) << "|"
+         << left << setw(16) << "Phone 2"
+         << left << setw(3) << "|"
+         << left << setw(16) << "Phone 3"
+         << left << setw(3) << "|"
+         << left << setw(16) << "Phone 4"
+         << endl;
+
+    map<string, contact>::iterator it = book.begin();
+    while (it != book.end())
+    {
+        cout << left << setw(40) << it->second.getName()
+             << left << setw(3) << "|"
+             << left << setw(16) << it->second.getNumber1()
+             << left << setw(3) << "|"
+             << left << setw(16) << it->second.getNumber2()
+             << left << setw(3) << "|"
+             << left << setw(16) << it->second.getNumber3()
+             << left << setw(3) << "|"
+             << left << setw(16) << it->second.getNumber4()
+             << endl;
+        it++;
+    }
+}
+
 void menu()
 {
     string choice;
@@ -375,6 +409,7 @@ void menu()
         else if (choice == "1")
         {
             system("cls");
+            displayPhoneBook();
             system("pause");
         }
         else if (choice == "2")
