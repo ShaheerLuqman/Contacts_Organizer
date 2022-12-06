@@ -6,6 +6,7 @@
 #include <map>
 #include <unordered_map>
 #include <vector>
+#include <regex>
 
 using namespace std;
 
@@ -460,7 +461,27 @@ void internationalization()
     return;
 }
 
-void smartSearch(); // Shaheer
+void similarContacts()
+{
+    cout << "Similar Contacts" << endl
+         << endl;
+
+    string input;
+    fflush(stdin);
+    cout << "Enter string to search: ";
+    getline(cin, input);
+
+    transform(input.begin(), input.end(), input.begin(), ::tolower);
+
+    map<string, contact>::iterator it = book.begin();
+    while (it != book.end())
+    {
+        if (it->first.find(input) != -1)
+            it->second.printContact();
+        it++;
+    }
+    return;
+}
 
 void duplicateContact(){}; // Shaheer
 
@@ -470,7 +491,10 @@ void menu();
 
 int main()
 {
-    cout << "Importing Contacts!" << endl;
+    system("cls");
+
+    cout << "Importing Contacts!" << endl
+         << endl;
     importContacts();
     cout << "Contacs Imported Successfully!" << endl;
     system("pause");
@@ -525,7 +549,7 @@ void displayPhoneBook()
 
 // void duplicateContact()
 // {
-//     typedef unordered_map<int, vector<string>> dupli;
+//     unordered_map<int, vector<string>> dupli;
 //     map<string, contact>::iterator it = book.begin();
 
 //     while (it != book.end())
@@ -606,6 +630,7 @@ void menu()
         else if (choice == "4")
         {
             system("cls");
+            similarContacts();
             system("pause");
         }
         else if (choice == "5")
