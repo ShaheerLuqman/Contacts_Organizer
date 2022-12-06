@@ -311,15 +311,7 @@ void missingInformation(){};
 void smartSearch(); // Shaheer
 
 void internationalization(string &a)
-{
-    if (a[1] == '2')
-    {
-        a.erase(0,3);
-        string ch = "(021)";
-        a = ch + a; 
-        return;
-    }
-    
+{    
     if (a[0] != '+')
     {
         a.erase(0, 1);
