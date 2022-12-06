@@ -80,6 +80,15 @@ public:
         }
     }
 
+    bool missingInformation()
+    {
+        for (int i = 0; i < n; i++)
+            if (isEmpty())
+                return true;
+
+        return false;
+    };
+
     string popNumber()
     {
         if (n > 0)
@@ -175,6 +184,14 @@ public:
         }
         return;
     }
+
+    void simplify()
+    {
+        for (int i = 0; i < n; i++)
+        {
+            numbers[i].erase(remove(numbers[i].begin(), numbers[i].end(), ' '), numbers[i].end());
+        };
+    };
 };
 
 map<string, contact> book;
@@ -210,6 +227,24 @@ void storeContactCSV(contact &cont)
         f << endl;
     }
 };
+
+void missingInformationContact()
+{
+    cout << "Contacts with missing Information" << endl
+         << endl;
+    map<string, contact>::iterator it = book.begin();
+    while (it != book.end())
+    {
+        it->second.missingInformation();
+        if (it->second.missingInformation())
+        {
+            it->second.printContact();
+        }
+        it++;
+    }
+    return;
+};
+
 void storeContactHash(contact &cont)
 {
     string stemp = cont.getName();
@@ -301,6 +336,20 @@ void createContact()
     system("pause");
 }
 
+void SimplifyContact()
+{
+    cout << "Simplifying All Contacts" << endl
+         << endl;
+
+    map<string, contact>::iterator it = book.begin();
+    while (it != book.end())
+    {
+        it->second.simplify();
+        it++;
+    }
+    return;
+}
+
 void deleteContact(contact &con)
 {
     book.erase(con.getName());
@@ -352,12 +401,9 @@ void internationalization()
     return;
 }
 
-void missingInformation(){};
-// Shaharyar; function bataye ga ke contact mein naam missing ho ya numbers 1 bhi na hoon tou woh insert kerwayega
-
 void smartSearch(); // Shaheer
 
-void simplifyNumber(){}; // Shaharyar
+// Shaharyar
 
 void duplicateContact(){}; // Shaheer
 
@@ -497,6 +543,7 @@ void menu()
         else if (choice == "8")
         {
             system("cls");
+            missingInformationContact();
             system("pause");
         }
         else if (choice == "9")
@@ -525,6 +572,7 @@ void menu()
         else if (choice == "13")
         {
             system("cls");
+            SimplifyContact();
             system("pause");
         }
         else if (choice == "14")
