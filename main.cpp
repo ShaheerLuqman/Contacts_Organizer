@@ -14,9 +14,9 @@ private:
     string name;
     int n = 0;
     string numbers[4] = {""};
-    bool potentiallyInvalid = false;
 
 public:
+    bool potentiallyInvalid = false;
     friend void storeContactCSV(contact &);
     friend void importContacts();
     friend bool isInvalidContact(contact &);
@@ -48,6 +48,7 @@ public:
             numbers[n] = number;
             n++;
         }
+        isInvalidContact();
     };
 
     void printNumbers()
@@ -97,6 +98,32 @@ public:
             return true;
         else
             return false;
+    };
+
+    void isInvalidContact()
+    {
+        potentiallyInvalid = false;
+        string num;
+        int len;
+        for (int i = 0; i < n; i++)
+        {
+            num = numbers[i];
+            len = num.length();
+            if (len > 14 || len < 10) // contact can not be longer than 14 and shorter than 10
+                potentiallyInvalid = true;
+            else
+            {
+                if (!(num[0] == '0' || num[0] == '+')) // first digit other than 0 or +
+                    potentiallyInvalid = true;
+
+                else
+                {
+                    for (int i = 1; i < len; i++) // any non zero digit after first digit
+                        if (num[i] < '0' || num[i] > '9')
+                            potentiallyInvalid = true;
+                }
+            }
+        }
     };
 };
 
@@ -169,7 +196,7 @@ void importContacts()
                     temp.addNumber(stemp);
                 }
                 storeContactHash(temp);
-                temp.printContact();
+                // temp.printContact();
             }
         }
     }
@@ -224,37 +251,9 @@ void createContact()
     system("pause");
 }
 
-bool isInvalidContact(contact &cont)
-{
-    bool invalid = false;
-    string num;
-    int len, lower, upper;
-    for (int i = 0; i < cont.n; i++)
-    {
-        num = cont.numbers[i];
-        len = num.length();
-        if (len > 14 || len < 10) // contact can not be longer than 14 and shorter than 10
-            invalid = true;
-        else
-        {
-            if (!(num[0] == '0' || num[0] == '+')) // first digit other than 0 or +
-                invalid = true;
-
-            else
-            {
-                for (int i = 1; i < len; i++) // any non zero digit after first digit
-                    if (num[i] < '0' || num[i] > '9')
-                        invalid = true;
-            }
-        }
-    }
-    return invalid;
-};
-
 void deleteContact(contact &con)
 {
     book.erase(con.getName());
-
     // delete from file??
 }
 
@@ -311,12 +310,11 @@ void missingInformation(){};
 
 void smartSearch(); // Shaheer
 
-void internationalization(string a[])
+void internationalization(string a)
 {
-    if (a[0] != "+")
+    if (a[0] != '+')
     {
-        char ch = '+92';
-
+        string ch = "+92";
         a = ch + a;
     }
     else
@@ -331,37 +329,17 @@ void duplicateContact(){}; // Shaheer
 // Preview and Confirm All Changes
 void searchAndReplaceContacts(){}; // shaheer
 
+void menu();
+
 int main()
 {
+    cout << "Importing Contacts!" << endl;
     importContacts();
-    cout << "Contacs Imported Successfully" << endl;
-    // createContact();
-
-    contact hi("M. Shaheer Luqman", "03100124127");
-    hi.addNumber("03352904355");
-    hi.addNumber("0845131541");
-    storeContactHash(hi);
-
+    cout << "Contacs Imported Successfully!" << endl;
     system("pause");
 
-    // unordered_map traversal
-    map<string, contact>::iterator it = book.begin();
-    while (it != book.end())
-    {
-        string word = it->first;
-        it->second.printContact();
+    menu();
 
-        it++;
-    }
-
-    // if (isInvalidContact(hi))
-    // {
-    //     cout << "Invalid";
-    // }
-    // else
-    // {
-    //     cout << "Valid";
-    // }
     return 0;
 }
 
@@ -397,14 +375,83 @@ void menu()
         else if (choice == "1")
         {
             system("cls");
+            system("pause");
         }
         else if (choice == "2")
         {
             system("cls");
+            system("pause");
         }
         else if (choice == "3")
         {
             system("cls");
+            createContact();
+            system("pause");
+        }
+        else if (choice == "4")
+        {
+            system("cls");
+            system("pause");
+        }
+        else if (choice == "5")
+        {
+            system("cls");
+            system("pause");
+        }
+        else if (choice == "6")
+        {
+            system("cls");
+            system("pause");
+        }
+        else if (choice == "7")
+        {
+            system("cls");
+            system("pause");
+        }
+        else if (choice == "8")
+        {
+            system("cls");
+            system("pause");
+        }
+        else if (choice == "9")
+        {
+            system("cls");
+            cout << "Potentially invalid contacts." << endl;
+            map<string, contact>::iterator it = book.begin();
+            while (it != book.end())
+            {
+                if (it->second.potentiallyInvalid)
+                {
+                    it->second.printContact();
+                }
+                it++;
+            }
+            system("pause");
+        }
+        else if (choice == "10")
+        {
+            system("cls");
+            system("pause");
+        }
+        else if (choice == "11")
+        {
+            system("cls");
+            system("pause");
+        }
+        else if (choice == "12")
+        {
+            system("cls");
+            system("pause");
+        }
+        else if (choice == "13")
+        {
+            system("cls");
+            system("pause");
+        }
+        else if (choice == "14")
+        {
+            system("cls");
+            system("pause");
         }
         else
             cout << "Wrong Input Entered!";
