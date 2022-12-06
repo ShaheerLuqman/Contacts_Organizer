@@ -246,6 +246,7 @@ void fillInEmptyContacts()
 {
     if (book.find("") != book.end())
     {
+        fflush(stdin);
         string line;
         cout << "Enter new Name: ";
         getline(cin, line);
@@ -383,6 +384,36 @@ void SimplifyContact()
     }
     return;
 }
+
+// void updateContact()
+// {
+//     int choice;
+//     cout << "What do you want to update? "
+//          << "\n1. Name"
+//          << "\n2. Numbers";
+//     cin >> choice;
+
+//     if (choice == 1)
+//     {
+//         cout << "Enter New Name ";
+//         getline(cin, name);
+//     }
+//     else
+//     {
+//         int opt;
+//         string newNumber;
+//         cout << "Which Number you want to update? \n";
+//         for (int i = 0; i < n; i++)
+//         {
+//             cout << i + 1 << "." << endl;
+//         }
+//         cin >> opt;
+//         cout << "Enter new Number ";
+//         getline(cin, newNumber);
+//         numbers[opt - 1] = newNumber;
+//     }
+//     cout << "Updated";
+// }
 
 void deleteContact(string num)
 {
