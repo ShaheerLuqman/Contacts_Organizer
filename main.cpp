@@ -254,18 +254,69 @@ void storeContactHash(contact &cont)
     book.insert(make_pair(stemp, cont));
 }
 
-void changeName(string n1)
+void importContacts()
 {
-    fflush(stdin);
-    string line;
-    cout << "Enter new Name: ";
-    getline(cin, line);
+    fstream f;
+    string line, stemp;
 
-    contact temp = book[n1];
-    temp.setName(line);
-    book.erase(n1);
-    storeContactHash(temp);
+    f.open("contactsFile.csv", ios::in);
+    if (!f.is_open() && f.fail())
+    {
+        cout << "\nNo record found\n";
+        f.close();
+    }
+    else
+    {
+        while (!f.eof())
+        {
+            getline(f, line);
+            if (line != "")
+            {
+                contact temp;
+                stringstream input_stringstream(line);
+                getline(input_stringstream, stemp, ',');
+                temp.name = stemp;
+
+                for (int i = 0; i < 4; i++)
+                {
+                    getline(input_stringstream, stemp, ',');
+                    temp.addNumber(stemp);
+                }
+                storeContactHash(temp);
+                // temp.printContact();
+            }
+        }
+    }
 };
+
+void createContact()
+{
+    contact a;
+    string input;
+    int count;
+    fflush(stdin);
+    cout << "Creating New Contact\n"
+         << "Enter Name: ";
+    getline(cin, input);
+    a.setName(input);
+
+    do
+    {
+        cout << "How many numbers do want to add in this contact: ";
+        cin >> count;
+    } while (count > 4 || count < 0);
+
+    for (int i = 0; i < count; i++)
+    {
+        cout << "Enter Contact Number: ";
+        cin >> input;
+        a.addNumber(input);
+    }
+
+    storeContactHash(a);
+
+    system("pause");
+}
 
 void fillInEmptyContacts()
 {
@@ -307,41 +358,6 @@ void missingInformationContact()
     return;
 };
 
-void importContacts()
-{
-    fstream f;
-    string line, stemp;
-
-    f.open("contactsFile.csv", ios::in);
-    if (!f.is_open() && f.fail())
-    {
-        cout << "\nNo record found\n";
-        f.close();
-    }
-    else
-    {
-        while (!f.eof())
-        {
-            getline(f, line);
-            if (line != "")
-            {
-                contact temp;
-                stringstream input_stringstream(line);
-                getline(input_stringstream, stemp, ',');
-                temp.name = stemp;
-
-                for (int i = 0; i < 4; i++)
-                {
-                    getline(input_stringstream, stemp, ',');
-                    temp.addNumber(stemp);
-                }
-                storeContactHash(temp);
-                // temp.printContact();
-            }
-        }
-    }
-};
-
 contact *searchContact()
 {
     string input;
@@ -363,72 +379,6 @@ contact *searchContact()
         cout << "No contact found!" << endl;
         return NULL;
     }
-}
-
-void updateContact()
-{
-    contact *t = searchContact();
-    if (t == NULL)
-        return;
-
-    int choice;
-    cout << "\nWhat do you want to update? "
-         << "\n1. Name"
-         << "\n2. Numbers"
-         << "\n0. Back"
-         << "\nYour Choice: ";
-    cin >> choice;
-    if (choice == 0)
-        return;
-    else if (choice == 1)
-        changeName(t->getName());
-    else if (choice == 2)
-    {
-        int choice;
-        cout << "Which Number you want to update? \n";
-        t->printNumbers();
-        cin >> choice;
-        choice--;
-        if (choice >= 0 && choice < t->n)
-        {
-            string newNumber;
-            fflush(stdin);
-            cout << "Enter new Number: ";
-            getline(cin, newNumber);
-            t->numbers[choice] = newNumber;
-        }
-    }
-    cout << "Contact Updated!" << endl;
-    t->printContact();
-}
-
-void createContact()
-{
-    contact a;
-    string input;
-    int count;
-    fflush(stdin);
-    cout << "Creating New Contact\n"
-         << "Enter Name: ";
-    getline(cin, input);
-    a.setName(input);
-
-    do
-    {
-        cout << "How many numbers do want to add in this contact: ";
-        cin >> count;
-    } while (count > 4 || count < 0);
-
-    for (int i = 0; i < count; i++)
-    {
-        cout << "Enter Contact Number: ";
-        cin >> input;
-        a.addNumber(input);
-    }
-
-    storeContactHash(a);
-
-    system("pause");
 }
 
 void SimplifyContact()
@@ -564,21 +514,54 @@ void searchByNumber(string n1)
 
 void searchAndReplaceContacts(){}; // shaheer
 
-void menu();
-
-int main()
+void changeName(string n1)
 {
-    system("cls");
+    fflush(stdin);
+    string line;
+    cout << "Enter new Name: ";
+    getline(cin, line);
 
-    cout << "Importing Contacts!" << endl
-         << endl;
-    importContacts();
-    cout << "Contacs Imported Successfully!" << endl;
-    system("pause");
+    contact temp = book[n1];
+    temp.setName(line);
+    book.erase(n1);
+    storeContactHash(temp);
+};
 
-    menu();
+void updateContact()
+{
+    contact *t = searchContact();
+    if (t == NULL)
+        return;
 
-    return 0;
+    int choice;
+    cout << "\nWhat do you want to update? "
+         << "\n1. Name"
+         << "\n2. Numbers"
+         << "\n0. Back"
+         << "\nYour Choice: ";
+    cin >> choice;
+    if (choice == 0)
+        return;
+    else if (choice == 1)
+        changeName(t->getName());
+    else if (choice == 2)
+    {
+        int choice;
+        cout << "Which Number you want to update? \n";
+        t->printNumbers();
+        cin >> choice;
+        choice--;
+        if (choice >= 0 && choice < t->n)
+        {
+            string newNumber;
+            fflush(stdin);
+            cout << "Enter new Number: ";
+            getline(cin, newNumber);
+            t->numbers[choice] = newNumber;
+        }
+    }
+    cout << "Contact Updated!" << endl;
+    t->printContact();
 }
 
 void displayPhoneBook()
@@ -813,4 +796,19 @@ void menu()
         else
             cout << "Wrong Input Entered!";
     }
+}
+
+int main()
+{
+    system("cls");
+
+    cout << "Importing Contacts!" << endl
+         << endl;
+    importContacts();
+    cout << "Contacs Imported Successfully!" << endl;
+    system("pause");
+
+    menu();
+
+    return 0;
 }
