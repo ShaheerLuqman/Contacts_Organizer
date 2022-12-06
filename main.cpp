@@ -145,6 +145,36 @@ public:
         }
         return;
     }
+
+    void capitalize()
+    {
+        char ch;
+        int len, i;
+        len = name.size();
+        for (i = 0; i < len; ++i)
+        {
+            if (i == 0)
+            {
+                if (islower(name[i]))
+                    name[i] = toupper(name[i]);
+            }
+            else
+            {
+                if (name[i] != ' ')
+                {
+                    if (isupper(name[i]))
+                        name[i] = tolower(name[i]);
+                }
+                else
+                {
+                    i++;
+                    if (islower(name[i]))
+                        name[i] = toupper(name[i]);
+                }
+            }
+        }
+        return;
+    }
 };
 
 map<string, contact> book;
@@ -295,32 +325,29 @@ void mergeContact(contact &c1, contact &c2)
     deleteContact(c2);
 }
 
-void Capitalization(string &name)
+void capitalization()
 {
-    char ch;
-    int len, i;
-    len = name.size();
-    for (i = 0; i < len; ++i)
+    cout << "Capitalizing All Contacts" << endl
+         << endl;
+
+    map<string, contact>::iterator it = book.begin();
+    while (it != book.end())
     {
-        if (i == 0)
-        {
-            if (islower(name[i]))
-                name[i] = toupper(name[i]);
-        }
-        else
-        {
-            if (name[i] != ' ')
-            {
-                if (isupper(name[i]))
-                    name[i] = tolower(name[i]);
-            }
-            else
-            {
-                i++;
-                if (islower(name[i]))
-                    name[i] = toupper(name[i]);
-            }
-        }
+        it->second.capitalize();
+        it++;
+    }
+    return;
+}
+
+void internationalization()
+{
+    cout << "Internationalizing All Contacts" << endl
+         << endl;
+    map<string, contact>::iterator it = book.begin();
+    while (it != book.end())
+    {
+        it->second.internationalize();
+        it++;
     }
     return;
 }
@@ -329,23 +356,6 @@ void missingInformation(){};
 // Shaharyar; function bataye ga ke contact mein naam missing ho ya numbers 1 bhi na hoon tou woh insert kerwayega
 
 void smartSearch(); // Shaheer
-
-void internationalization(string &a)
-{
-    if (a[0] == '0' && a[1] == '2')
-    {
-        a.erase(0, 2);
-        string ch = "+922";
-        a = ch + a;
-    }
-    else if (a[0] == '0' && a[1] == '3')
-    {
-        a.erase(0, 2);
-        string ch = "+923";
-        a = ch + a;
-    }
-    return;
-}
 
 void simplifyNumber(){}; // Shaharyar
 
@@ -363,7 +373,7 @@ int main()
     cout << "Contacs Imported Successfully!" << endl;
     system("pause");
 
-    // menu();
+    menu();
 
     return 0;
 }
@@ -498,11 +508,13 @@ void menu()
         else if (choice == "11")
         {
             system("cls");
+            internationalization();
             system("pause");
         }
         else if (choice == "12")
         {
             system("cls");
+            capitalization();
             system("pause");
         }
         else if (choice == "13")
