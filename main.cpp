@@ -414,6 +414,20 @@ void displayPhoneBook()
 
 // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
+void InvalidContacts()
+{
+    cout << "Potentially invalid contacts." << endl;
+    map<string, contact>::iterator it = book.begin();
+    while (it != book.end())
+    {
+        if (it->second.potentiallyInvalid)
+        {
+            it->second.printContact();
+        }
+        it++;
+    }
+}
+
 void menu()
 {
     string choice;
@@ -488,16 +502,7 @@ void menu()
         else if (choice == "9")
         {
             system("cls");
-            cout << "Potentially invalid contacts." << endl;
-            map<string, contact>::iterator it = book.begin();
-            while (it != book.end())
-            {
-                if (it->second.potentiallyInvalid)
-                {
-                    it->second.printContact();
-                }
-                it++;
-            }
+            InvalidContacts();
             system("pause");
         }
         else if (choice == "10")
