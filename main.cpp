@@ -22,6 +22,7 @@ public:
     friend void storeContactCSV(contact &);
     friend void importContacts();
     friend bool isInvalidContact(contact &);
+    friend void updateContact();
 
     contact() {}
     contact(string name, string number) : name(name) { addNumber(number); }
@@ -242,19 +243,44 @@ void exportContactCSV()
     }
 }
 
+void storeContactHash(contact &cont)
+{
+    string stemp = cont.getName();
+    transform(stemp.begin(), stemp.end(), stemp.begin(), ::tolower);
+    book.insert(make_pair(stemp, cont));
+}
+
+void changeName(string n1)
+{
+    fflush(stdin);
+    string line;
+    cout << "Enter new Name: ";
+    getline(cin, line);
+
+    contact temp = book[n1];
+    temp.setName(line);
+    book.erase(n1);
+    storeContactHash(temp);
+};
+
 void fillInEmptyContacts()
 {
+    cout << "Contacts with missing Names" << endl
+         << endl;
+
     if (book.find("") != book.end())
     {
+        book[""].printContact();
         fflush(stdin);
         string line;
         cout << "Enter new Name: ";
         getline(cin, line);
 
-        contact *temp = &book[""];
-        temp->setName(line);
+        contact temp = book[""];
+        temp.setName(line);
         book.erase("");
-        storeContactCSV(*temp);
+        storeContactHash(temp);
+        book[line].printContact();
     }
     else
         cout << "No empty names contact found" << endl;
@@ -276,13 +302,6 @@ void missingInformationContact()
     }
     return;
 };
-
-void storeContactHash(contact &cont)
-{
-    string stemp = cont.getName();
-    transform(stemp.begin(), stemp.end(), stemp.begin(), ::tolower);
-    book.insert(make_pair(stemp, cont));
-}
 
 void importContacts()
 {
@@ -342,11 +361,49 @@ contact *searchContact()
     }
 }
 
+void updateContact()
+{
+    contact *t = searchContact();
+    if (t == NULL)
+        return;
+
+    int choice;
+    cout << "\nWhat do you want to update? "
+         << "\n1. Name"
+         << "\n2. Numbers"
+         << "\n0. Back"
+         << "\nYour Choice: ";
+    cin >> choice;
+    if (choice == 0)
+        return;
+    else if (choice == 1)
+        changeName(t->getName());
+    else if (choice == 2)
+    {
+        int choice;
+        cout << "Which Number you want to update? \n";
+        t->printNumbers();
+        cin >> choice;
+        choice--;
+        if (choice >= 0 && choice < t->n)
+        {
+            string newNumber;
+            fflush(stdin);
+            cout << "Enter new Number: ";
+            getline(cin, newNumber);
+            t->numbers[choice] = newNumber;
+        }
+    }
+    cout << "Contact Updated!" << endl;
+    t->printContact();
+}
+
 void createContact()
 {
     contact a;
     string input;
     int count;
+    fflush(stdin);
     cout << "Creating New Contact\n"
          << "Enter Name: ";
     getline(cin, input);
@@ -366,7 +423,6 @@ void createContact()
     }
 
     storeContactHash(a);
-    storeContactCSV(a);
 
     system("pause");
 }
@@ -384,36 +440,6 @@ void SimplifyContact()
     }
     return;
 }
-
-// void updateContact()
-// {
-//     int choice;
-//     cout << "What do you want to update? "
-//          << "\n1. Name"
-//          << "\n2. Numbers";
-//     cin >> choice;
-
-//     if (choice == 1)
-//     {
-//         cout << "Enter New Name ";
-//         getline(cin, name);
-//     }
-//     else
-//     {
-//         int opt;
-//         string newNumber;
-//         cout << "Which Number you want to update? \n";
-//         for (int i = 0; i < n; i++)
-//         {
-//             cout << i + 1 << "." << endl;
-//         }
-//         cin >> opt;
-//         cout << "Enter new Number ";
-//         getline(cin, newNumber);
-//         numbers[opt - 1] = newNumber;
-//     }
-//     cout << "Updated";
-// }
 
 void deleteContact(string num)
 {
@@ -621,7 +647,7 @@ void menu()
              << "   1.  View All Contacts\n"  // Done
              << "   2.  Search Contact\n"     // Done
              << "   3.  Create New Contact\n" // Done
-             << "   4.  Similar contact\n"
+             << "   4.  Similar contact\n"    // Done
              << "   5.  Duplicate Contacts\n"
              << "   6.  Delete Contact\n"               // Done
              << "   7.  Fill-in Empty Contacts Names\n" // Done
@@ -632,8 +658,9 @@ void menu()
              << "   12. Capitalization\n"               // Done
              << "   13. Simplify Numbers\n"             // Done
              << "   14. Search and Replace Contacts\n"
-             << "   15. Save Changes\n" // Done
-             << "   0.  Exit\n"         // Done
+             << "   15. Save Changes\n"    // Done
+             << "   16. Update Contacts\n" // Done
+             << "   0.  Exit\n"            // Done
              << "Your Input: ";
         cin >> choice;
         if (choice == "0")
@@ -726,6 +753,12 @@ void menu()
         {
             system("cls");
             exportContactCSV();
+            system("pause");
+        }
+        else if (choice == "16")
+        {
+            system("cls");
+            updateContact();
             system("pause");
         }
         else
