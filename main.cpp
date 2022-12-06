@@ -81,10 +81,14 @@ public:
 
     string popNumber()
     {
-        string num;
-        num = numbers[n - 1];
-        numbers[n - 1] = "";
-        return num;
+        if (n > 0)
+        {
+            string num;
+            num = numbers[n - 1];
+            numbers[n - 1] = "";
+            n--;
+            return num;
+        }
     }
 
     bool isEmpty()
