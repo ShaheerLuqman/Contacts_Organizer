@@ -4,7 +4,8 @@
 #include <iomanip>
 #include <algorithm>
 #include <map>
-// #include <unordered_map>
+#include <unordered_map>
+#include <vector>
 
 using namespace std;
 
@@ -50,13 +51,6 @@ public:
         }
         isInvalidContact();
     };
-
-    void updateName(string newName)
-    {
-        deleteContact(*this);
-        setName(newName);
-        storeContactCSV(*this);
-    }
 
     void printNumbers()
     {
@@ -235,6 +229,19 @@ void storeContactCSV(contact &cont)
     }
 };
 
+void exportContactCSV()
+{
+    cout << "Exporting contact!" << endl;
+    map<string, contact>::iterator it = book.begin();
+    remove("contactsFile.csv");
+    system("pause");
+    while (it != book.end())
+    {
+        storeContactCSV(it->second);
+        it++;
+    }
+}
+
 void fillInEmptyContacts()
 {
     if (book.find("") != book.end())
@@ -242,10 +249,14 @@ void fillInEmptyContacts()
         string line;
         cout << "Enter new Name: ";
         getline(cin, line);
-        book[""].updateName(line);
+
+        contact *temp = &book[""];
+        temp->setName(line);
+        book.erase("");
+        storeContactCSV(*temp);
     }
     else
-        cout << " : Not found" << endl;
+        cout << "No empty names contact found" << endl;
 }
 
 void missingInformationContact()
@@ -324,7 +335,10 @@ contact *searchContact()
         return temp;
     }
     else
+    {
         cout << "No contact found!" << endl;
+        return NULL;
+    }
 }
 
 void createContact()
@@ -373,7 +387,15 @@ void SimplifyContact()
 void deleteContact(contact &con)
 {
     book.erase(con.getName());
-    // delete from file??
+}
+
+void Delete()
+{
+    cout << "Deleting Contact" << endl
+         << endl;
+    contact *n1 = searchContact();
+    deleteContact(*n1);
+    cout << "Contact Deleted! " << endl;
 }
 
 void mergeContact(contact &c1, contact &c2)
@@ -390,8 +412,23 @@ void mergeContact(contact &c1, contact &c2)
         string num = c2.popNumber();
         c1.addNumber(num);
     }
+    cout << "Second Contact Deleted!";
+    book.erase(c2.getName());
+    system("pause");
+}
 
-    deleteContact(c2);
+void merge()
+{
+    cout << "Merging Contacts" << endl
+         << endl;
+    contact *n1 = searchContact();
+    contact *n2 = searchContact();
+
+    if (n1 != NULL && n2 != NULL)
+    {
+        mergeContact(*n1, *n2);
+        cout << "Contact Merged! " << endl;
+    }
 }
 
 void capitalization()
@@ -478,7 +515,32 @@ void displayPhoneBook()
     }
 }
 
-// |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+// bool check_key(unordered_map<string, vector<string>> &m, string key)
+// {
+//     // Key is not present
+//     if (m.count(key) == 0)
+//         return false;
+
+//     return true;
+// }
+
+// void duplicateContact()
+// {
+//     typedef unordered_map<int, vector<string>> dupli;
+//     map<string, contact>::iterator it = book.begin();
+
+//     while (it != book.end())
+//     {
+//         for (int i = 0; i < it->second.getN(); i++)
+//         {
+//             if (check_key(dupli, it->second.numbers[i]))
+//             {
+//                 break;
+//             }
+//             dupli.insert(it->second.numbers[i], it->first);
+//         }
+//     }
+// }
 
 void InvalidContacts()
 {
@@ -502,21 +564,22 @@ void menu()
         system("cls");
         cout << "Welcome to CONTACT ORGANIZER";
         cout << "\nPress\n"
-             << "   1.  View All Contacts\n"
-             << "   2.  Search Contact\n"
-             << "   3.  Create New Contact\n"
+             << "   1.  View All Contacts\n"  // Done
+             << "   2.  Search Contact\n"     // Done
+             << "   3.  Create New Contact\n" // Done
              << "   4.  Similar contact\n"
              << "   5.  Duplicate Contacts\n"
-             << "   6.  Delete Contact\n"
-             << "   7.  Fill-in Empty Contacts Names\n"
-             << "   8.  Missing Information\n"
-             << "   9.  Invalid Contacts\n"
+             << "   6.  Delete Contact\n"               // Done
+             << "   7.  Fill-in Empty Contacts Names\n" // Done
+             << "   8.  Missing Information\n"          // Done
+             << "   9.  Invalid Contacts\n"             // Done
              << "   10. Merge contact\n"
-             << "   11. Internationalization\n"
-             << "   12. Capitalization\n"
-             << "   13. Simplify Numbers\n"
+             << "   11. Internationalization\n" // Done
+             << "   12. Capitalization\n"       // Done
+             << "   13. Simplify Numbers\n"     // Done
              << "   14. Search and Replace Contacts \n"
-             << "   0.  Exit\n"
+             << "   15. Save Changes\n"
+             << "   0.  Exit\n" // Done
              << "Your Input: ";
         cin >> choice;
         if (choice == "0")
@@ -554,11 +617,13 @@ void menu()
         else if (choice == "6")
         {
             system("cls");
+            Delete();
             system("pause");
         }
         else if (choice == "7")
         {
             system("cls");
+            fillInEmptyContacts();
             system("pause");
         }
         else if (choice == "8")
@@ -576,6 +641,7 @@ void menu()
         else if (choice == "10")
         {
             system("cls");
+            merge();
             system("pause");
         }
         else if (choice == "11")
@@ -599,6 +665,12 @@ void menu()
         else if (choice == "14")
         {
             system("cls");
+            system("pause");
+        }
+        else if (choice == "15")
+        {
+            system("cls");
+            exportContactCSV();
             system("pause");
         }
         else
