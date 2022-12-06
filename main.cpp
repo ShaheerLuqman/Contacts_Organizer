@@ -85,13 +85,12 @@ public:
         }
     }
 
-    bool missingInformation()
+    bool isEmpty()
     {
-        for (int i = 0; i < n; i++)
-            if (isEmpty())
-                return true;
-
-        return false;
+        if (numbers[0] == "")
+            return true;
+        else
+            return false;
     };
 
     string popNumber()
@@ -105,14 +104,6 @@ public:
             return num;
         }
     }
-
-    bool isEmpty()
-    {
-        if (numbers[0] == "")
-            return true;
-        else
-            return false;
-    };
 
     void isInvalidContact()
     {
@@ -338,7 +329,9 @@ void fillInEmptyContacts()
         book[line].printContact();
     }
     else
+    {
         cout << "No empty names contact found" << endl;
+    }
 }
 
 void missingInformationContact()
@@ -348,8 +341,7 @@ void missingInformationContact()
     map<string, contact>::iterator it = book.begin();
     while (it != book.end())
     {
-        it->second.missingInformation();
-        if (it->second.missingInformation())
+        if (it->second.isEmpty())
         {
             it->second.printContact();
         }
@@ -376,6 +368,7 @@ contact *searchContact()
     }
     else
     {
+        book.erase(input);
         cout << "No contact found!" << endl;
         return NULL;
     }
