@@ -23,6 +23,8 @@ public:
     friend void importContacts();
     friend bool isInvalidContact(contact &);
     friend void updateContact();
+    friend void duplicateContact();
+    friend void searchByNumber(string n1);
 
     contact() {}
     contact(string name, string number) : name(name) { addNumber(number); }
@@ -134,6 +136,8 @@ public:
                         if (num[i] < '0' || num[i] > '9')
                             potentiallyInvalid = true;
                 }
+                if (num[0] == '+' && num[1] == '0')
+                    potentiallyInvalid = true;
             }
         }
     };
@@ -540,7 +544,23 @@ void similarContacts()
     return;
 }
 
-void duplicateContact(){}; // Shaheer
+void searchByNumber(string n1)
+{
+    contact *temp;
+    map<string, contact>::iterator it = book.begin();
+    while (it != book.end())
+    {
+        for (int i = 0; i < it->second.getN(); i++)
+        {
+            if (it->second.numbers[i] == n1)
+            {
+                temp = &it->second;
+                temp->printContact();
+            };
+        }
+        it++;
+    }
+}
 
 void searchAndReplaceContacts(){}; // shaheer
 
@@ -595,32 +615,60 @@ void displayPhoneBook()
     }
 }
 
-// bool check_key(unordered_map<string, vector<string>> &m, string key)
-// {
-//     // Key is not present
-//     if (m.count(key) == 0)
-//         return false;
+void duplicateContact()
+{
+    cout << "Finding all the duplicate Contacts" << endl
+         << endl;
 
-//     return true;
-// }
+    cout << "Loading..." << endl;
+    unordered_map<string, int> M;
 
-// void duplicateContact()
-// {
-//     unordered_map<int, vector<string>> dupli;
-//     map<string, contact>::iterator it = book.begin();
+    map<string, contact>::iterator it = book.begin();
+    while (it != book.end())
+    {
+        for (int i = 0; i < it->second.getN(); i++)
+        {
+            string str = it->second.numbers[i];
+            string word = "";
+            for (int i = 0; i < str.size(); i++)
+            {
+                if (str[i] == ' ')
+                {
+                    if (M.find(word) == M.end())
+                    {
+                        M.insert(make_pair(word, 1));
+                        word = "";
+                    }
+                    else
+                    {
+                        M[word]++;
+                        word = "";
+                    }
+                }
+                else
+                    word += str[i];
+            }
 
-//     while (it != book.end())
-//     {
-//         for (int i = 0; i < it->second.getN(); i++)
-//         {
-//             if (check_key(dupli, it->second.numbers[i]))
-//             {
-//                 break;
-//             }
-//             dupli.insert(it->second.numbers[i], it->first);
-//         }
-//     }
-// }
+            if (M.find(word) == M.end())
+                M.insert(make_pair(word, 1));
+
+            else
+                M[word]++;
+        }
+        it++;
+    }
+    cout << "Loading Complete" << endl;
+    system("pause");
+    system("cls");
+
+    for (auto &it : M)
+    {
+        if (it.second > 1)
+        {
+            searchByNumber(it.first);
+        }
+    }
+}
 
 void InvalidContacts()
 {
@@ -694,6 +742,7 @@ void menu()
         else if (choice == "5")
         {
             system("cls");
+            duplicateContact();
             system("pause");
         }
         else if (choice == "6")
