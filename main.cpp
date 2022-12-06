@@ -125,6 +125,26 @@ public:
             }
         }
     };
+
+    void internationalize()
+    {
+        for (int i = 0; i < n; i++)
+        {
+            if (numbers[i][0] == '0' && numbers[i][1] == '2')
+            {
+                numbers[i].erase(0, 2);
+                string ch = "+922";
+                numbers[i] = ch + numbers[i];
+            }
+            else if (numbers[i][0] == '0' && numbers[i][1] == '3')
+            {
+                numbers[i].erase(0, 2);
+                string ch = "+923";
+                numbers[i] = ch + numbers[i];
+            }
+        }
+        return;
+    }
 };
 
 map<string, contact> book;
@@ -202,7 +222,7 @@ void importContacts()
     }
 };
 
-contact searchContact()
+contact *searchContact()
 {
     string input;
     fflush(stdin);
@@ -210,12 +230,12 @@ contact searchContact()
     getline(cin, input);
     transform(input.begin(), input.end(), input.begin(), ::tolower);
 
-    contact temp;
-    temp = book[input];
+    contact *temp;
+    temp = &book[input];
 
-    if (temp.getName() != "" && temp.isEmpty() != true)
+    if (temp->getName() != "" && temp->isEmpty() != true)
     {
-        temp.printContact();
+        temp->printContact();
         return temp;
     }
     else
@@ -311,17 +331,21 @@ void missingInformation(){};
 void smartSearch(); // Shaheer
 
 void internationalization(string &a)
-{    
-    if (a[0] != '+')
+{
+    if (a[0] == '0' && a[1] == '2')
     {
-        a.erase(0, 1);
-        string ch = "+92";
+        a.erase(0, 2);
+        string ch = "+922";
         a = ch + a;
     }
-    else
-        return;
+    else if (a[0] == '0' && a[1] == '3')
+    {
+        a.erase(0, 2);
+        string ch = "+923";
+        a = ch + a;
+    }
+    return;
 }
-// Shaharyar; agar number se pehle international code na ho tou woh laga de for e.g 03100124127 tou usko +923100124127 kerde. yeh sirf 03XX... wale numbers nahi 021XX.. wale bhi kerna chahiye
 
 void simplifyNumber(){}; // Shaharyar
 
@@ -339,7 +363,7 @@ int main()
     cout << "Contacs Imported Successfully!" << endl;
     system("pause");
 
-    menu();
+    // menu();
 
     return 0;
 }
@@ -377,6 +401,8 @@ void displayPhoneBook()
         it++;
     }
 }
+
+// |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 void menu()
 {
