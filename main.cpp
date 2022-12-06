@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <map>
 #include <unordered_map>
+#include <regex>
 
 using namespace std;
 
@@ -23,6 +24,7 @@ public:
     friend void updateContact();
     friend void duplicateContact();
     friend void searchByNumber(string n1);
+    friend void searchAndReplaceContacts();
 
     contact() {}
     contact(string name, string number) : name(name) { addNumber(number); }
@@ -503,7 +505,34 @@ void searchByNumber(string n1)
     }
 }
 
-void searchAndReplaceContacts(){}; // shaheer
+void searchAndReplaceContacts()
+{
+    string search, replace;
+    cout << "Search and Replace" << endl
+         << endl;
+
+    fflush(stdin);
+    cout << "Enter string to search: ";
+    getline(cin, search);
+
+    fflush(stdin);
+    cout << "Enter string to replace with: ";
+    getline(cin, replace);
+
+    cout << "Loading..." << endl;
+
+    map<string, contact>::iterator it = book.begin();
+    while (it != book.end())
+    {
+        it->second.name = regex_replace(it->second.name, regex(search), replace);
+        for (int i = 0; i < it->second.getN(); i++)
+        {
+            it->second.numbers[i] = regex_replace(it->second.numbers[i], regex(search), replace);
+        }
+        it++;
+    }
+    cout << "Loading Complete" << endl;
+};
 
 void changeName(string str)
 {
@@ -777,6 +806,7 @@ void menu()
         else if (choice == "14")
         {
             system("cls");
+            searchAndReplaceContacts();
             system("pause");
         }
         else if (choice == "15")
