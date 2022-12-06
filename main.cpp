@@ -361,7 +361,7 @@ contact *searchContact()
     contact *temp;
     temp = &book[input];
 
-    if (temp->getName() != "" && temp->isEmpty() != true)
+    if (temp->getName() != "")
     {
         temp->printContact();
         return temp;
@@ -507,17 +507,25 @@ void searchByNumber(string n1)
 
 void searchAndReplaceContacts(){}; // shaheer
 
-void changeName(string n1)
+void changeName(string str)
 {
     fflush(stdin);
     string line;
     cout << "Enter new Name: ";
     getline(cin, line);
-
-    contact temp = book[n1];
+    contact temp;
     temp.setName(line);
-    book.erase(n1);
     storeContactHash(temp);
+
+    transform(str.begin(), str.end(), str.begin(), ::tolower);
+
+    contact *n1 = &book[line];
+    contact *n2 = &book[str];
+
+    if (n1 != NULL && n2 != NULL)
+        mergeContact(*n1, *n2);
+
+    n1->printContact();
 };
 
 void updateContact()
@@ -554,7 +562,6 @@ void updateContact()
         }
     }
     cout << "Contact Updated!" << endl;
-    t->printContact();
 }
 
 void displayPhoneBook()
