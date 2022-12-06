@@ -234,7 +234,6 @@ void exportContactCSV()
     cout << "Exporting contact!" << endl;
     map<string, contact>::iterator it = book.begin();
     remove("contactsFile.csv");
-    system("pause");
     while (it != book.end())
     {
         storeContactCSV(it->second);
@@ -463,11 +462,8 @@ void internationalization()
 
 void smartSearch(); // Shaheer
 
-// Shaharyar
-
 void duplicateContact(){}; // Shaheer
 
-// Preview and Confirm All Changes
 void searchAndReplaceContacts(){}; // shaheer
 
 void menu();
@@ -576,13 +572,13 @@ void menu()
              << "   7.  Fill-in Empty Contacts Names\n" // Done
              << "   8.  Missing Information\n"          // Done
              << "   9.  Invalid Contacts\n"             // Done
-             << "   10. Merge contact\n"
-             << "   11. Internationalization\n" // Done
-             << "   12. Capitalization\n"       // Done
-             << "   13. Simplify Numbers\n"     // Done
-             << "   14. Search and Replace Contacts \n"
-             << "   15. Save Changes\n"
-             << "   0.  Exit\n" // Done
+             << "   10. Merge contact\n"                // Done
+             << "   11. Internationalization\n"         // Done
+             << "   12. Capitalization\n"               // Done
+             << "   13. Simplify Numbers\n"             // Done
+             << "   14. Search and Replace Contacts\n"
+             << "   15. Save Changes\n" // Done
+             << "   0.  Exit\n"         // Done
              << "Your Input: ";
         cin >> choice;
         if (choice == "0")
