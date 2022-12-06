@@ -384,17 +384,21 @@ void SimplifyContact()
     return;
 }
 
-void deleteContact(contact &con)
+void deleteContact(string num)
 {
-    book.erase(con.getName());
+    transform(num.begin(), num.end(), num.begin(), ::tolower);
+    book.erase(num);
 }
 
 void Delete()
 {
+    string input;
     cout << "Deleting Contact" << endl
          << endl;
-    contact *n1 = searchContact();
-    deleteContact(*n1);
+    fflush(stdin);
+    cout << "Enter contact name to search: ";
+    getline(cin, input);
+    deleteContact(input);
     cout << "Contact Deleted! " << endl;
 }
 
@@ -412,15 +416,14 @@ void mergeContact(contact &c1, contact &c2)
         string num = c2.popNumber();
         c1.addNumber(num);
     }
-    cout << "Second Contact Deleted!";
-    book.erase(c2.getName());
-    system("pause");
+    deleteContact(c2.getName());
 }
 
 void merge()
 {
     cout << "Merging Contacts" << endl
          << endl;
+
     contact *n1 = searchContact();
     contact *n2 = searchContact();
 
