@@ -51,6 +51,13 @@ public:
         isInvalidContact();
     };
 
+    void updateName(string newName)
+    {
+        deleteContact(*this);
+        setName(newName);
+        storeContactCSV(*this);
+    }
+
     void printNumbers()
     {
         for (int i = 0; i < n; i++)
@@ -227,6 +234,19 @@ void storeContactCSV(contact &cont)
         f << endl;
     }
 };
+
+void fillInEmptyContacts()
+{
+    if (book.find("") != book.end())
+    {
+        string line;
+        cout << "Enter new Name: ";
+        getline(cin, line);
+        book[""].updateName(line);
+    }
+    else
+        cout << " : Not found" << endl;
+}
 
 void missingInformationContact()
 {
@@ -512,6 +532,7 @@ void menu()
         else if (choice == "2")
         {
             system("cls");
+            searchContact();
             system("pause");
         }
         else if (choice == "3")
